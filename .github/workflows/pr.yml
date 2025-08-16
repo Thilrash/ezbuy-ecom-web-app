@@ -1,0 +1,38 @@
+name: Build Angular & .NET App
+
+on:
+  pull_request:  # Runs on PRs to any branch
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Angular Dependencies
+        run: npm install
+        working-directory: ./ezbuy-client-app
+
+      - name: Build Angular Client
+        run: npm run build
+        working-directory: ./ezbuy-client-app
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore .NET Dependencies
+        run: dotnet restore
+        working-directory: ./ezbuy-server-app
+
+      - name: Build .NET Server
+        run: dotnet build --configuration Release
+        working-directory: ./ezbuy-server-app
