@@ -1,4 +1,4 @@
-name:  Build, Push, and Deploy to TBlogiee App
+name:  Build, Push, and Deploy to ezBuy App
 
 on:
   push:
