@@ -1,0 +1,74 @@
+name:  Build, Push, and Deploy to TBlogiee App
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment for Angular Client
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # Adjust if required by your Angular app
+
+      # Step 3: Install Angular dependencies
+      - name: Install Angular Dependencies
+        run: npm install
+        working-directory: ./ezbuy-client-app
+
+      # Step 4: Build Angular Client
+      - name: Build Angular Client
+        run: npm run build
+        working-directory: ./ezbuy-client-app
+
+      # Step 5: Set up .NET SDK for the Server
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      # Step 6: Restore .NET dependencies
+      - name: Restore .NET Dependencies
+        run: dotnet restore
+        working-directory: ./ezbuy-server-app
+
+      # Step 7: Build .NET Server
+      - name: Build .NET Server
+        run: dotnet build --configuration Release
+        working-directory: ./ezbuy-server-app
+  # Deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: Build
+    
+  #   steps:
+  #     - name: Deploy to Netlify
+  #       uses: nwtgck/actions-netlify@v1.2.1
+  #       with:
+  #         publish-dir: tblogiee-client-app/dist/tblogiee-client-app
+  #         production: true
+  #       env:
+  #         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+  #         NETLIFY_SITE_ID: 663a5c38-152d-4041-9463-bf3bb3abd272
+
+  Documentation:
+    runs-on: ubuntu-latest
+    needs: Build # This job will only run after the 'deploy' job completes successfully
+
+    steps:
+      # Step 8: Generate Deployment Notes
+      - name: Generate Deployment Notes
+        run: |
+          echo "## Deployment Details" > deploy-notes.md
+          echo "Build ID: $GITHUB_RUN_ID" >> deploy-notes.md
+          echo "Merge Commit: ${{ github.sha }}" >> deploy-notes.md
+          echo "Deployed by: ${{ github.actor }}" >> deploy-notes.md
+          echo "Date: $(date)" >> deploy-notes.md
