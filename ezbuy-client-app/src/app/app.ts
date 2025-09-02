@@ -5,7 +5,7 @@ import { ThemeToggle } from "./shared/theme-toggle/theme-toggle";
 
 @Component({
   selector: 'app-root',
-  imports: [Login, RouterOutlet, ThemeToggle],
+  imports: [Login, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
