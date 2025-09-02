@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, Signal, Input } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -14,8 +14,6 @@ export class ThemeToggle {
 
   constructor(public themeService: ThemeService) {
     this.theme = this.themeService.theme;
-    console.log("Theme => ", this.theme);
-
   }
 
   get isDark(): boolean {
