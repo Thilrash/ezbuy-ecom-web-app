@@ -46,6 +46,10 @@
             outline: none;
           }
         }
+
+        input.ng-invalid.ng-touched {
+          border-color: var(--error-input-border-color);
+        }
       }
 
       button {
@@ -62,8 +66,8 @@
 
         .bi-arrow-right {
           font-size: 1.5rem;
-          display: inline-block; 
-          transition: transform 0.4s ease; 
+          display: inline-block;
+          transition: transform 0.4s ease;
           transform: translateX(0); //rotate(0deg);
         }
 
