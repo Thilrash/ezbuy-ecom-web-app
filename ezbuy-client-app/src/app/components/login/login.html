@@ -17,14 +17,28 @@
       eCommerce Application
     </h2>
     <h4 class="ez-container__login__subtitle">Login to your account</h4>
-    <form class="ez-container__login__form">
+    <form
+      class="ez-container__login__form"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+    >
+      @if (email?.invalid && (email?.dirty || email?.touched)) { 
+        @if (email?.errors?.['required']) {
+          <p>*Email is required!</p> 
+        }
+      }
       <div>
         <label for="email">Email</label>
-        <input id="email" type="email" [formControl]="email" />
+        <input id="email" type="email" formControlName="email" />
       </div>
+      @if (password?.invalid && (password?.dirty || password?.touched)) { 
+        @if (password?.errors?.['required']) {
+          <p>*Password is required!</p>
+        }
+      }
       <div>
         <label for="password">Password</label>
-        <input id="password" type="password" [formControl]="password" />
+        <input id="password" type="password" formControlName="password" />
       </div>
       <button type="submit">
         Login
@@ -32,6 +46,7 @@
           <i class="bi bi-arrow-right"></i>
         </span>
       </button>
+      <p>{{ errorMessage }}</p>
       <p class="ez-container__login__form__forgot-password">
         <a href="#">Forgot Password?</a>
       </p>
@@ -41,8 +56,13 @@
       </p>
     </form>
     <div class="ez-container__login__theme-toggle-container">
-      <p>Apply theme for your preferences <i class="bi bi-brightness-high-fill"></i></p>
-      <app-theme-toggle class="ez-container__login__theme-toggle-container__theme-content"></app-theme-toggle>
+      <p>
+        Apply theme for your preferences
+        <i class="bi bi-brightness-high-fill"></i>
+      </p>
+      <app-theme-toggle
+        class="ez-container__login__theme-toggle-container__theme-content"
+      ></app-theme-toggle>
     </div>
     <p class="text-center m-4">&copy; All Rights Reserved to Thilrash Ameen</p>
   </div>
